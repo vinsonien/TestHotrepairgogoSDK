@@ -55,6 +55,7 @@ public class RepairManager {
 //                                    .setTitle("升级成功");
 //                        Log.e(TAG,"修复 成功~~~~~~~");
                         if (callBack != null){
+                            Log.d(TAG,"repairResult");
                             callBack.repairResult(patchResult);
                         }else{
                             Log.e(TAG,"RepairCallBack is null");
@@ -67,6 +68,7 @@ public class RepairManager {
                     public void onSuccess(HashMap<String, String> hashMap) {
 //                        Log.e(TAG,"成功了 HashMap:" + hashMap.toString());
                         if (callBack != null){
+                            Log.d(TAG,"onSuccessConfig");
                             callBack.onSuccessConfig(hashMap);
                         }else{
                             Log.e(TAG,"RepairCallBack is null");
@@ -77,6 +79,7 @@ public class RepairManager {
                     public void onFail(Exception e) {
 //                        Log.e(TAG,"失败了啊:"  + e.toString());
                         if (callBack != null){
+                            Log.d(TAG,"onFailConfig");
                             callBack.onFailConfig(e);
                         }else{
                             Log.e(TAG,"RepairCallBack is null");

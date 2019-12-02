@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 // 当模块必须声明为com.android.library时才能使用，否则会报错
 apply plugin: "guru.stefma.bintrayrelease"
-version = "1.0.0"
+version = "1.0.2"
 group = "com.lws" //jcenter的路径,可以随便自定义
 //当前这个bintrayRelease依赖于AndroidArtifacts
 androidArtifact {
@@ -12,7 +12,7 @@ publish {
     userOrg = 'vinsonien' //bintray用户名
     repoName = 'XOXO' //要传过去的库名
     artifactId = 'hotrepairgogo' //要传过去的项目名
-    desc = 'This is used to write articles' //描述
+    desc = '更新版本 适配R8 androidx打包问题' //描述
     website = 'https://github.com/vinsonien/TestHotrepairgogoSDK' // 项目网站，尽量用对，因为在之后上传到jcenter的时候会检查，不过那个时候再改也没问题
 }
 
@@ -21,8 +21,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -50,7 +50,7 @@ dependencies {
 
     //  若使用annotation需要单独引用,对于tinker的其他库都无需再引用
 //    compileOnly("com.tinkerpatch.tinker:tinker-android-anno:1.9.11")
-    api("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.11")
+    api("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.14")
 
 }
 

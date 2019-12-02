@@ -1,19 +1,81 @@
 apply plugin: 'com.android.application'
+apply from: 'tinkerpatch.gradle'
+//apply tinker插件
+//apply plugin: 'com.tencent.tinker.patch'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.test.sdk.hotrepairgogo"
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+
     }
-    buildTypes {
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        debug {
+            keyAlias 'debugalias'
+            keyPassword '8dsd9ln4ut'
+            storeFile file('./keystore/dcpappdebug.keystore')
+            storePassword 'sjfh38jkhk9'
+        }
         release {
+            keyAlias 'releasealias'
+            keyPassword 'j7kc0m2f51'
+            storeFile file('./keystore/dcpapprelease.keystore')
+            storePassword 'yk483k73nbz'
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            // true - 打开资源压缩
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // 自定义包名
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+
+                    // test_版本号_yyyymmdd_release.apk
+                    def fileName = "TestHotrepair_v${variant.versionName}.apk"
+                    def outFile = output.outputFile
+
+                    //删除之前生成的apk
+                    def outputDir = project.buildDir.absolutePath + "/outputs/apk/release/";
+                    def outputDirFile = new File(outputDir + fileName);
+                    if (outputDirFile.exists()) {
+                        outputDirFile.delete();
+                    }
+
+                    if (outFile != null && outFile.name.endsWith('.apk')) {
+                        outputFileName = fileName
+                    }
+                }
+            }
         }
     }
 }
@@ -26,4 +88,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(path: ':hotrepairgogo')
+
+    implementation "com.android.support:multidex:1.0.1"
+
+//    compileOnly("com.tinkerpatch.tinker:tinker-android-anno:1.9.14")
+//    implementation("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.2.14")
 }
